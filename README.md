@@ -1,2 +1,2 @@
-# FileOrganiser
-A program that organises files in a directory in your computer based on type (images and videos currently) and date 
+# Media Organizer Pal ( MOP )
+A Python-based desktop program that organises media files (videos and images, to start) based on the date taken and adds geo-location if any. 
