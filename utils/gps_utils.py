@@ -1,11 +1,12 @@
 from geopy.geocoders import Nominatim
 import pyexiv2
 import re
+import os
 
 def get_gps_from_image(image_path):
     """Return the GPS coordinates from an image."""
-    if not image_path:
-        print(f"Path {image_path} is not valid.")
+    if not os.path.isfile(image_path):
+        print(f"File {image_path} does not exist.")
         return None
     gps_info = {}
     with pyexiv2.Image(image_path) as img:
@@ -22,6 +23,7 @@ def get_gps_from_image(image_path):
 def get_lat_lon_from_gps(gps_info):
     """Return the latitude and longitude from GPSInfo in decimal degrees."""
     if not gps_info or not isinstance(gps_info, dict):
+        print(f"GPSInfo {gps_info} is not a dictionary.")
         return None
     # check if the GPSInfo dictionary has the required keys
     lat_ref = gps_info.get("Exif.GPSInfo.GPSLatitudeRef")
@@ -30,11 +32,16 @@ def get_lat_lon_from_gps(gps_info):
     lat = gps_info.get("Exif.GPSInfo.GPSLatitude")
     lon = gps_info.get("Exif.GPSInfo.GPSLongitude")
 
-    if lat_ref not in ["N", "S"] or lon_ref not in ["E", "W"]:
+    if lat_ref not in ["N", "S"]:
+        print(f"Latitude reference {lat_ref} is not 'N' or 'S'.")
+        return None
+    if lon_ref not in ["E", "W"]:
+        print(f"Longitude reference {lon_ref} is not 'E' or 'W'.")
         return None
     gps_pattern = r"\d+/\d+ \d+/\d+ \d+/\d+"
     if re.search(gps_pattern, lat) is None \
         or re.search(gps_pattern, lon) is None:
+        print(f"Latitude {lat} or Longitude {lon} is not in the correct format,\n\t e.g. '47/1 59/1 536568/10000'.")
         return None
     # convert the GPS coordinates to decimal degrees
     lat_deg, lat_min, lat_sec = [float(val.split('/')[0]) / float(val.split('/')[1]) for val in lat.split()]
