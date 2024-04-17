@@ -1,0 +1,8 @@
+# ignore compiled python files
+*.pyc
+
+# ignore pytest cache
+.pytest_cache
+
+# ignore setup egg-info directory
+MediaOrganiserPal.egg-info/
