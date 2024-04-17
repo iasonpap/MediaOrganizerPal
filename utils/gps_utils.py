@@ -2,6 +2,16 @@ from geopy.geocoders import Nominatim
 import pyexiv2
 import re
 
+CITIES = {'Le Mans': (48.0073849, 0.1967849),
+          'London': (51.5073219, -0.1276474),
+          'Truro': (50.2627515, -5.0520467),
+          'Athens': (37.9839412, 23.7283052),
+          'Etretat': (49.707636, 0.2042726),
+          'Paris': (48.8566969, 2.3514616),
+          'Marseille': (43.2961743, 5.3699525),
+          'Rouen': (49.4404591, 1.0939658),
+          }
+
 def get_gps_from_image(image_path):
     """Return the GPS coordinates from an image."""
     gps_info = {}
