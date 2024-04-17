@@ -1,10 +1,13 @@
-from ..utils.gps_utils import get_gps_from_image, get_lat_lon_from_gps
+from utils.gps_utils import get_gps_from_image, get_lat_lon_from_gps
 
 class TestGetGPSFromImage:
-    def test_gps_is_not_None(self):
-        image_path = "tests/data/IMG_20220403_122754.jpg"
-        gps_info = get_gps_from_image(image_path)
-        assert isinstance(gps_info, dict)
+    def test_gps_is_not_None_for_images(self):
+        import os 
+        for file in os.listdir("tests/data"):
+            if file.endswith(".jpg"):
+                image_path = os.path.join("tests/data", file)
+                gps_info = get_gps_from_image(image_path)
+                assert gps_info is not None
 
     def test_lon_lat_exists(self):
         image_path = "tests/data/IMG_20220403_122754.jpg"
@@ -12,10 +15,21 @@ class TestGetGPSFromImage:
         assert "Exif.GPSInfo.GPSLatitude" in gps_info
         assert "Exif.GPSInfo.GPSLongitude" in gps_info
 
-    def test_gps_is_None_for_video(self):
-        video_path = "tests/data/VID_20220616_214208.mp4"
-        gps_info = get_gps_from_image(video_path)
-        assert gps_info is None
+    def test_gps_is_None_for_videos(self):
+        import os 
+        for file in os.listdir("tests/data"):
+            if file.endswith(".mp4"):
+                video_path = os.path.join("tests/data", file)
+                gps_info = get_gps_from_image(video_path)
+                assert gps_info is None
+
+    def test_gps_is_not_None_for_panoramas(self):
+        import os 
+        for file in os.listdir("tests/data"):
+            if file.endswith(".jpg") and "PANO" in file:
+                panorama_path = os.path.join("tests/data", file)
+                gps_info = get_gps_from_image(panorama_path)
+                assert gps_info is not None
 
     def test_gps_is_None_for_bad_path(self):
         bad_path = "tests/data/nonexistent.jpg"
