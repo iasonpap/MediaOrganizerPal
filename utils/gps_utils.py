@@ -4,6 +4,9 @@ import re
 
 def get_gps_from_image(image_path):
     """Return the GPS coordinates from an image."""
+    if not image_path:
+        print(f"Path {image_path} is not valid.")
+        return None
     gps_info = {}
     with pyexiv2.Image(image_path) as img:
         metadata = img.read_exif()
